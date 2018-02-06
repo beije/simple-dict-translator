@@ -1,9 +1,9 @@
 class Translator {
     constructor() {
-        this.supportedLocales = new Set();
-        this.fallbackLocale = '';
-        this.currentLocale = '';
-        this.translations = {};
+        this._supportedLocales = new Set();
+        this._fallbackLocale = '';
+        this._currentLocale = '';
+        this._translations = {};
     }
 
     /**
@@ -16,8 +16,8 @@ class Translator {
     addTranslation(locale, translationDict, isCurrent) {
         locale = this.normalizeLocale(locale);
 
-        this.supportedLocales.add(locale);
-        this.translations[locale] = translationDict;
+        this._supportedLocales.add(locale);
+        this._translations[locale] = translationDict;
 
         if (isCurrent) {
             this.setCurrentLocale(locale);
@@ -32,8 +32,8 @@ class Translator {
     removeTranslation(locale) {
         locale = this.normalizeLocale(locale);
 
-        this.supportedLocales.delete(locale);
-        delete this.translations[locale];
+        this._supportedLocales.delete(locale);
+        delete this._translations[locale];
     }
 
     /**
@@ -57,8 +57,8 @@ class Translator {
      */
     setCurrentLocale(locale)  {
         locale = this.normalizeLocale(locale)
-        if (locale && this.translations[locale]) {
-            this.currentLocale = locale;
+        if (locale && this._translations[locale]) {
+            this._currentLocale = locale;
         }
     }
 
@@ -68,7 +68,7 @@ class Translator {
      * @param {string}  locale  The new current locale.
      */
     getCurrentLocale()  {
-        return this.currentLocale;
+        return this._currentLocale;
     }
 
     /**
@@ -78,8 +78,8 @@ class Translator {
      */
     setFallbackLocale(locale)  {
         locale = this.normalizeLocale(locale)
-        if (locale && this.translations[locale]) {
-            this.fallbackLocale = locale;
+        if (locale && this._translations[locale]) {
+            this._fallbackLocale = locale;
         }
     }
 
@@ -89,7 +89,7 @@ class Translator {
      * @param {string}  locale  The new fallback locale.
      */
     getFallbackLocale()  {
-        return this.fallbackLocale;
+        return this._fallbackLocale;
     }
 
     /**
@@ -105,7 +105,7 @@ class Translator {
     getClosestLocale(locale)  {
         locale = this.normalizeLocale(locale);
 
-        if(this.supportedLocales.has(locale)) {
+        if(this._supportedLocales.has(locale)) {
             return locale;
         }
     
@@ -114,7 +114,7 @@ class Translator {
         let requestCountry = (locale.length > 1 ? locale[1] : null);
         let closest = false;
     
-        this.supportedLocales.forEach(supportedCode => {
+        this._supportedLocales.forEach(supportedCode => {
             let supportedCodeParts = supportedCode.split('_');
             if (requestLanguage == supportedCodeParts[0]) {
                 closest = supportedCode;
@@ -122,7 +122,7 @@ class Translator {
         });
         
         if (!closest) {
-            closest = this.fallbackLocale;
+            closest = this._fallbackLocale;
         }
     
         return closest;
@@ -145,19 +145,19 @@ class Translator {
         }
     
         if (!locale) {
-            locale = this.currentLocale;
+            locale = this._currentLocale;
         }
     
-        if (this.fallbackLocale && this.translations[this.fallbackLocale] && this.translations[this.fallbackLocale][key]) {
-            translation = this.translations[this.fallbackLocale][key];
+        if (this._fallbackLocale && this._translations[this._fallbackLocale] && this._translations[this._fallbackLocale][key]) {
+            translation = this._translations[this._fallbackLocale][key];
         }
     
-        if (this.currentLocale && this.translations[this.currentLocale] && this.translations[this.currentLocale][key]) {
-            translation = this.translations[this.currentLocale][key];
+        if (this._currentLocale && this._translations[this._currentLocale] && this._translations[this._currentLocale][key]) {
+            translation = this._translations[this._currentLocale][key];
         }
     
-        if (locale && this.translations[locale] && this.translations[locale][key]) {
-            translation = this.translations[locale][key];
+        if (locale && this._translations[locale] && this._translations[locale][key]) {
+            translation = this._translations[locale][key];
         }
     
         if (translation === '') {
