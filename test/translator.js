@@ -17,7 +17,7 @@ describe('translator', function () {
         });
     });
 
-    describe('translations', function () {
+    describe('translation', function () {
         let en_locale = 'en_us';
         let en_dict = {'welcome': 'Welcome'};
 
@@ -27,30 +27,88 @@ describe('translator', function () {
         let de_locale = 'de_de';
         let de_dict = {'welcome': 'Willkommen', 'goodbye': 'Auf Wiedersehen'};
 
-        describe('add', function () {
+        describe('dictionaries', function () {
             let locale = sv_locale;
             let dict = sv_dict;
 
 
-            it('should add translations to supported translations', function () {
-                translator.addTranslation(locale, dict);
 
-                expect(translator.translate('welcome', locale)).to.eql(dict.welcome);
+            describe('which does not exist', function () {
+                it('should be marked as non supported', function () {    
+                    expect(translator.hasTranslation(locale)).to.eql(false);
+                });
+            })
+
+            describe('when added', function () {
+                describe('as non current', function () {
+                    beforeEach(function() {
+                        translator.addTranslation(locale, dict);
+                    });
+
+                    it('should be added as supported', function () {    
+                        expect(translator.hasTranslation(locale)).to.eql(true);
+                    });
+
+                    it('should translate correctly', function () {    
+                        expect(translator.translate('welcome', locale)).to.eql(dict.welcome);
+                    });
+
+                    it('should not become current translation', function () {
+                        expect(translator.translate('welcome')).to.not.eql(dict.welcome);
+                    });
+                });
+
+                describe('as current', function () {
+                    beforeEach(function() {
+                        translator.addTranslation(locale, dict, true);
+                    });
+
+                    it('should be added as supported', function () {    
+                        expect(translator.hasTranslation(locale)).to.eql(true);
+                    });
+
+                    it('should become current translation', function () {
+                        expect(translator.getCurrentLocale()).to.eql(locale);
+                    });
+                });
+
+                describe('and then removed', function () {
+                    beforeEach(function() {
+                        translator.addTranslation(locale, dict);
+                        translator.removeTranslation(locale);
+                    });
+
+                    it('should be removed', function () {    
+                        expect(translator.hasTranslation(locale)).to.eql(false);
+                    });
+                });
             });
 
-            it('should set default translation when adding translation', function () {
-                translator.addTranslation(locale, dict, true);
-                expect(translator.translate('welcome')).to.eql(dict.welcome);
-            });
-
-            it('should remove translations to supported translations', function () {
-                translator.addTranslation(locale, dict);
-
-                translator.removeTranslation(locale);
-                expect(translator.translate('welcome', locale)).to.eql('welcome');
-            });
-
-
+            describe('translate', function () {
+                beforeEach(function() {
+                    translator.addTranslation(en_locale, en_dict);
+                    translator.addTranslation(sv_locale, sv_dict);
+                    translator.addTranslation(de_locale, de_dict);
+                    translator.setCurrentLocale(en_locale);
+                    translator.setFallbackLocale(de_locale);
+                });
+    
+                it('should be able to translate current locale', function () {
+                    expect(translator.translate('welcome')).to.eql(en_dict.welcome);
+                })
+                it('should be able to translate given locale', function () {
+                    expect(translator.translate('welcome', sv_locale)).to.eql(sv_dict.welcome);
+                })
+                it('should be able to translate and go to fallback locale', function () {
+                    expect(translator.translate('goodbye')).to.eql(de_dict.goodbye);
+                })
+                it('should be able to translate and give key if no matching translation was found', function () {
+                    expect(translator.translate('hello')).to.eql('hello');
+                })
+                it('should throw error if no key is given', function () {
+                    expect(translator.translate).to.throw();
+                })
+            })
         });
         describe('locales', function () {
             beforeEach(function() {
@@ -92,33 +150,6 @@ describe('translator', function () {
             })
 
         });
-        describe('translate', function () {
-            beforeEach(function() {
-                translator.addTranslation(en_locale, en_dict);
-                translator.addTranslation(sv_locale, sv_dict);
-                translator.addTranslation(de_locale, de_dict);
-                translator.setCurrentLocale(en_locale);
-                translator.setFallbackLocale(de_locale);
-            });
-
-            it('should be able to translate current locale', function () {
-                expect(translator.translate('welcome')).to.eql(en_dict.welcome);
-            })
-            it('should be able to translate given locale', function () {
-                expect(translator.translate('welcome', sv_locale)).to.eql(sv_dict.welcome);
-            })
-            it('should be able to translate and go to fallback locale', function () {
-                expect(translator.translate('goodbye')).to.eql(de_dict.goodbye);
-            })
-            it('should be able to translate and give key if no matching translation was found', function () {
-                expect(translator.translate('hello')).to.eql('hello');
-            })
-            it('should throw error if no key is given', function () {
-                expect(translator.translate).to.throw();
-            })
-
-
-        })
     })
 
 });
