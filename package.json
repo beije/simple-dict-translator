@@ -1,7 +1,7 @@
 {
   "name": "simple-dict-translator",
-  "version": "1.0.0",
-  "description": "A simple translation module which accepts locale's with dictionary mappings",
+  "version": "1.0.1",
+  "description": "A simple translation module which accepts locales with dictionary mappings",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
