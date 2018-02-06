@@ -1,0 +1,12 @@
+src/
+test/
+coverage/
+example/
+.travis.yml
+.jenkins.yml
+.codeclimate.yml
+.jscsrc
+.jshintrc
+.eslintrc*
+.idea
+.editorconfig
