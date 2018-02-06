@@ -21,7 +21,7 @@ See [example/index.js](https://github.com/beije/simple-dict-translator/blob/mast
 
     var englishTranslations = {
         'hi':           'Hi',
-        'welcome':      'Välkommen'
+        'welcome':      'Welcome'
     };
     var swedishTranslations = {
         'hi':           'Hej',
