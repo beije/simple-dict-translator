@@ -45,7 +45,7 @@ class Translator {
      * @return {string}         The normalized locale
      */
     normalizeLocale(locale)  {
-        locale = locale.split('-').join('_');
+        locale = ('' + locale).split('-').join('_');
     
         return locale.toLowerCase();
     }
@@ -56,6 +56,7 @@ class Translator {
      * @param {string}  locale  The new current locale.
      */
     setCurrentLocale(locale)  {
+        locale = this.normalizeLocale(locale)
         if (locale && this.translations[locale]) {
             this.currentLocale = locale;
         }
@@ -76,6 +77,7 @@ class Translator {
      * @param {string}  locale  The fallback locale.
      */
     setFallbackLocale(locale)  {
+        locale = this.normalizeLocale(locale)
         if (locale && this.translations[locale]) {
             this.fallbackLocale = locale;
         }
@@ -135,6 +137,8 @@ class Translator {
      */
     translate(key, locale)  {
         let translation = '';
+
+        locale = this.normalizeLocale(locale);
 
         if (!key) {
             throw new Error('Translation key must be specified!')
