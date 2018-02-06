@@ -54,6 +54,14 @@ See [example/index.js](https://github.com/beije/simple-dict-translator/blob/mast
 These are the available methods for the translator object.
 
     /**
+     * Checks if translator supports locale
+     *
+     * @param {string} locale           The locale for the translation.
+     * @param {bool}   true if translation for locale exists
+     */
+    translator.hasTranslation(locale);
+    
+    /**
     * Adds a new translation to the translator.
     *
     * @param {string} locale           The locale for the translation.

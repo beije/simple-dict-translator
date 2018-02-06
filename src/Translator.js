@@ -7,6 +7,18 @@ class Translator {
     }
 
     /**
+     * Checks if translator supports locale
+     *
+     * @param {string} locale           The locale for the translation.
+     * @param {bool}   true if translation for locale exists
+     */
+    hasTranslation(locale) {
+        locale = this.normalizeLocale(locale);
+
+        return this._supportedLocales.has(locale);
+    }
+
+    /**
      * Adds a new translation to the translator.
      *
      * @param {string} locale           The locale for the translation.
