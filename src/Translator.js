@@ -176,7 +176,7 @@ class Translator {
         if (translation === '') {
             translation = key;
 
-            if (fallback) {
+            if (fallback !== undefined) {
                 translation = fallback;
             }
         }

@@ -105,9 +105,22 @@ describe('translator', function () {
                 it('should be able to translate and give key if no matching translation was found', function () {
                     expect(translator.translate('hello')).to.eql('hello');
                 })
-                it('should be able to translate and give fallback if no matching translation was found but fallback string was', function () {
-                    expect(translator.translate('hello', false, 'Hej')).to.eql('Hej');
+                describe('should be able to translate and when fallback', function () {
+                    it('is set to something', function () {
+                        expect(translator.translate('hello', false, 'Hej')).to.eql('Hej');
+                    })
+                    it('is empty string', function () {
+                        expect(translator.translate('hello', false, '')).to.eql('');
+                    })
+                    it('is false', function () {
+                        expect(translator.translate('hello', false, false)).to.eql(false);
+                    })
+                });
+
+                it('should be able to translate and give key if fallback is undefined', function () {
+                    expect(translator.translate('hello', false, undefined)).to.eql('hello');
                 })
+
                 it('should throw error if no key is given', function () {
                     expect(translator.translate).to.throw();
                 })
