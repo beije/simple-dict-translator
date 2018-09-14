@@ -143,11 +143,12 @@ class Translator {
     /**
      * Translates a key to the current language (or overriding language).
      *
-     * @param {string} key      The translation/dictionary key
-     * @param {string} locale   [Optional] Overriding locale
-     * @return {string}         The translated string
+     * @param {string} key       The translation/dictionary key
+     * @param {string} locale    [Optional] Overriding locale
+     * @param {string} fallback  [Optional] fallback string if no translation was found
+     * @return {string}          The translated string
      */
-    translate(key, locale)  {
+    translate(key, locale, fallback)  {
         let translation = '';
 
         locale = this.normalizeLocale(locale);
@@ -174,6 +175,10 @@ class Translator {
     
         if (translation === '') {
             translation = key;
+
+            if (fallback) {
+                translation = fallback;
+            }
         }
     
         return translation;

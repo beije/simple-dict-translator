@@ -1,4 +1,4 @@
-import Translator from '../src/Translator'
+import Translator from '../src/Translator';
 import {expect} from 'chai';
 
 describe('translator', function () {
@@ -104,6 +104,9 @@ describe('translator', function () {
                 })
                 it('should be able to translate and give key if no matching translation was found', function () {
                     expect(translator.translate('hello')).to.eql('hello');
+                })
+                it('should be able to translate and give fallback if no matching translation was found but fallback string was', function () {
+                    expect(translator.translate('hello', false, 'Hej')).to.eql('Hej');
                 })
                 it('should throw error if no key is given', function () {
                     expect(translator.translate).to.throw();
