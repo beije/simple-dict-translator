@@ -128,11 +128,12 @@ These are the available methods for the translator object.
     translator.getClosestLocale(locale);
 
     /**
-    * Translates a key to the current language (or overriding language).
-    *
-    * @param {string} key      The translation/dictionary key
-    * @param {string} locale   [Optional] Overriding locale
-    * @return {string}         The translated string
-    */
-    translator.translate(key, locale);
+     * Translates a key to the current language (or overriding language).
+     *
+     * @param {string} key       The translation/dictionary key
+     * @param {string} locale    [Optional] Overriding locale
+     * @param {string} fallback  [Optional] fallback string if no translation was found
+     * @return {string}          The translated string
+     */
+    translate(key, locale, fallback)
 
